@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Goal Calculator, Unit Converter & Currency Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #ff6347;
+      background-color: #fafafa;
+    }
+    h1 {
+      text-align: center;
+      color: #ff6347;
+      font-size: 2em;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    button {
+      background-color: #ff6347;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #ff4500;
+    }
+    .result, .conversion-result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e0ffe0;
+      border: 2px solid #28a745;
+      border-radius: 5px;
+      color: #333;
+    }
+    h2 {
+      color: #ff6347;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    .conversion-section {
+      padding: 20px;
+      background-color: #f0f8ff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #ff6347;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Savings Goal Calculator</h1>
+    <!-- Savings Goal Section -->
+    <label for="monthlyIncome">Monthly Income (INR):</label>
+    <input type="number" id="monthlyIncome" placeholder="Enter your monthly income in INR" />
+    <label for="savingsGoal">Savings Goal (INR):</label>
+    <input type="number" id="savingsGoal" placeholder="Enter your savings goal in INR" />
+    <button onclick="calculateSavings()">Calculate Savings Goal</button>
+    <div id="result" class="result" style="display: none;"></div>
+
+    <!-- Unit Conversion Section -->
+    <h2>Unit Conversion</h2>
+    <div class="conversion-section">
+      <label for="unitAmount">Amount:</label>
+      <input type="number" id="unitAmount" placeholder="Enter amount to convert" />
+
+      <label for="unitType">Select Unit Type:</label>
+      <select id="unitType" onchange="updateUnitOptions()">
+        <option value="length">Length</option>
+        <option value="weight">Weight</option>
+        <option value="temperature">Temperature</option>
+        <option value="volume">Volume</option>
+      </select>
+
+      <!-- Length Conversion with Metric Prefixes -->
+      <div id="lengthOptions" class="unit-options">
+        <label for="lengthFrom">From:</label>
+        <select id="lengthFrom">
+          <option value="yotta">Yotta (Y)</option>
+          <option value="zetta">Zetta (Z)</option>
+          <option value="exa">Exa (E)</option>
+          <option value="peta">Peta (P)</option>
+          <option value="tera">Tera (T)</option>
+          <option value="giga">Giga (G)</option>
+          <option value="mega">Mega (M)</option>
+          <option value="kilo">Kilo (k)</option>
+          <option value="hecto">Hecto (h)</option>
+          <option value="deca">Deca (da)</option>
+          <option value="meter">Meter (m)</option>
+          <option value="deci">Deci (d)</option>
+          <option value="centi">Centi (c)</option>
+          <option value="milli">Milli (m)</option>
+          <option value="micro">Micro (μ)</option>
+          <option value="nano">Nano (n)</option>
+          <option value="pico">Pico (p)</option>
+          <option value="femto">Femto (f)</option>
+          <option value="atto">Atto (a)</option>
+          <option value="zepto">Zepto (z)</option>
+          <option value="yocto">Yocto (y)</option>
+        </select>
+
+        <label for="lengthTo">To:</label>
+        <select id="lengthTo">
+          <option value="yotta">Yotta (Y)</option>
+          <option value="zetta">Zetta (Z)</option>
+          <option value="exa">Exa (E)</option>
+          <option value="peta">Peta (P)</option>
+          <option value="tera">Tera (T)</option>
+          <option value="giga">Giga (G)</option>
+          <option value="mega">Mega (M)</option>
+          <option value="kilo">Kilo (k)</option>
+          <option value="hecto">Hecto (h)</option>
+          <option value="deca">Deca (da)</option>
+          <option value="meter">Meter (m)</option>
+          <option value="deci">Deci (d)</option>
+          <option value="centi">Centi (c)</option>
+          <option value="milli">Milli (m)</option>
+          <option value="micro">Micro (μ)</option>
+          <option value="nano">Nano (n)</option>
+          <option value="pico">Pico (p)</option>
+          <option value="femto">Femto (f)</option>
+          <option value="atto">Atto (a)</option>
+          <option value="zepto">Zepto (z)</option>
+          <option value="yocto">Yocto (y)</option>
+        </select>
+      </div>
+
+      <button onclick="convertUnit()">Convert</button>
+      <div id="unitConversionResult" class="conversion-result" style="display: none;"></div>
+    </div>
+
+    <!-- Money Conversion Section -->
+    <h2>Currency Conversion</h2>
+    <div class="conversion-section">
+      <label for="moneyAmount">Amount:</label>
+      <input type="number" id="moneyAmount" placeholder="Enter amount to convert" />
+      
+      <label for="currencyFrom">From Currency:</label>
+      <select id="currencyFrom">
+        <!-- Add all supported currencies -->
+        <option value="USD">USD - United States Dollar</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="GBP">GBP - British Pound</option>
+        <option value="INR">INR - Indian Rupee</option>
+        <option value="JPY">JPY - Japanese Yen</option>
+        <option value="AUD">AUD - Australian Dollar</option>
+        <option value="CAD">CAD - Canadian Dollar</option>
+        <option value="CHF">CHF - Swiss Franc</option>
+        <option value="CNY">CNY - Chinese Yuan</option>
+        <option value="SEK">SEK - Swedish Krona</option>
+        <option value="NZD">NZD - New Zealand Dollar</option>
+        <option value="MXN">MXN - Mexican Peso</option>
+        <option value="SGD">SGD - Singapore Dollar</option>
+        <option value="HKD">HKD - Hong Kong Dollar</option>
+        <option value="NOK">NOK - Norwegian Krone</option>
+        <option value="KRW">KRW - South Korean Won</option>
+        <option value="RUB">RUB - Russian Ruble</option>
+        <option value="BRL">BRL - Brazilian Real</option>
+        <option value="ZAR">ZAR - South African Rand</option>
+        <option value="AED">AED - United Arab Emirates Dirham</option>
+        <option value="TRY">TRY - Turkish Lira</option>
+        <option value="THB">THB - Thai Baht</option>
+        <option value="INR">INR - Indian Rupee</option>
+        <option value="DKK">DKK - Danish Krone</option>
+        <option value="PLN">PLN - Polish Zloty</option>
+        <option value="HUF">HUF - Hungarian Forint</option>
+        <option value="MYR">MYR - Malaysian Ringgit</option>
+        <option value="IDR">IDR - Indonesian Rupiah</option>
+        <!-- Add more currencies as needed -->
+      </select>
+
+      <label for="currencyTo">To Currency:</label>
+      <select id="currencyTo">
+        <!-- Add all supported currencies -->
+        <option value="USD">USD - United States Dollar</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="GBP">GBP - British Pound</option>
+        <option value="INR">INR - Indian Rupee</option>
+        <option value="JPY">JPY - Japanese Yen</option>
+        <option value="AUD">AUD - Australian Dollar</option>
+        <option value="CAD">CAD - Canadian Dollar</option>
+        <option value="CHF">CHF - Swiss Franc</option>
+        <option value="CNY">CNY - Chinese Yuan</option>
+        <option value="SEK">SEK - Swedish Krona</option>
+        <option value="NZD">NZD - New Zealand Dollar</option>
+        <option value="MXN">MXN - Mexican Peso</option>
+        <option value="SGD">SGD - Singapore Dollar</option>
+        <option value="HKD">HKD - Hong Kong Dollar</option>
+        <option value="NOK">NOK - Norwegian Krone</option>
+        <option value="KRW">KRW - South Korean Won</option>
+        <option value="RUB">RUB - Russian Ruble</option>
+        <option value="BRL">BRL - Brazilian Real</option>
+        <option value="ZAR">ZAR - South African Rand</option>
+        <option value="AED">AED - United Arab Emirates Dirham</option>
+        <option value="TRY">TRY - Turkish Lira</option>
+        <option value="THB">THB - Thai Baht</option>
+        <option value="INR">INR - Indian Rupee</option>
+        <option value="DKK">DKK - Danish Krone</option>
+        <option value="PLN">PLN - Polish Zloty</option>
+        <option value="HUF">HUF - Hungarian Forint</option>
+        <option value="MYR">MYR - Malaysian Ringgit</option>
+        <option value="IDR">IDR - Indonesian Rupiah</option>
+        <!-- Add more currencies as needed -->
+      </select>
+
+      <button onclick="convertMoney()">Convert Money</button>
+      <div id="moneyConversionResult" class="conversion-result" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Function to calculate savings goal
+    function calculateSavings() {
+      const income = parseFloat(document.getElementById('monthlyIncome').value);
+      const goal = parseFloat(document.getElementById('savingsGoal').value);
+      if (isNaN(income) || isNaN(goal) || income <= 0 || goal <= 0) {
+        alert('Please enter valid numbers for both fields.');
+        return;
+      }
+      if (goal > income) {
+        alert('Your savings goal cannot exceed your monthly income.');
+        return;
+      }
+
+      const dailySavings = (goal / 30).toFixed(2);
+      const weeklySavings = (goal / 4).toFixed(2);
+      const monthlySavings = (goal).toFixed(2);
+
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('result').innerHTML = `
+        <p><strong>Daily Savings:</strong> ${dailySavings}</p>
+        <p><strong>Weekly Savings:</strong> ${weeklySavings}</p>
+        <p><strong>Monthly Savings:</strong> ${monthlySavings}</p>
+      `;
+    }
+
+    // Function to convert unit
+    function convertUnit() {
+      const amount = parseFloat(document.getElementById('unitAmount').value);
+      const from = document.getElementById('lengthFrom').value;
+      const to = document.getElementById('lengthTo').value;
+
+      if (isNaN(amount)) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      const prefixes = {
+        tera: 1e12, giga: 1e9, mega: 1e6, kilo: 1e3, hecto: 1e2, deca: 1e1,
+        meter: 1e0, deci: 1e-1, centi: 1e-2, milli: 1e-3, micro: 1e-6, nano: 1e-9
+      };
+
+      const result = (amount * prefixes[from] / prefixes[to]).toFixed(2);
+
+      document.getElementById('unitConversionResult').style.display = 'block';
+      document.getElementById('unitConversionResult').innerHTML = `${amount} ${from} = ${result} ${to}`;
+    }
+
+    // Function to convert money between selected currencies
+    async function convertMoney() {
+      const amount = parseFloat(document.getElementById('moneyAmount').value);
+      const currencyFrom = document.getElementById('currencyFrom').value;
+      const currencyTo = document.getElementById('currencyTo').value;
+
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currencyFrom}`);
+        const data = await response.json();
+        const conversionRate = data.rates[currencyTo];
+        const convertedAmount = (amount * conversionRate).toFixed(2);
+
+        document.getElementById('moneyConversionResult').style.display = 'block';
+        document.getElementById('moneyConversionResult').innerHTML = `
+          <p>${amount} ${currencyFrom} = ${convertedAmount} ${currencyTo}</p>
+        `;
+      } catch (error) {
+        console.error('Error fetching exchange rate:', error);
+        alert('Unable to fetch conversion rate.');
+      }
+    }
+  </script>
+</body>
+</html>
